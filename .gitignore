@@ -3,5 +3,6 @@
 /webfonts
 package-lock.json
 composer.lock
+composer.json
 style.css.map
 .DS_Store
