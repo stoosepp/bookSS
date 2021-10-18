@@ -5,7 +5,7 @@
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
- * 
+ *
  */
 
 $bookRoot = getRootForPage($post);//Get the book for the current page
@@ -29,12 +29,13 @@ if ( is_page() && $post->post_parent ) {
             echo '<ul class="toc-section"><li style="font-size:0.75em; color:red;">This is the root page for a book. Add some sub pages, so this Table of Contents is populated.</li></ul>';
 
         }
-        
+
     }
-   
+
 }
 
 $childPages = getKids($bookRoot);
+//echo $bookRoot;
 if (( $childPages) && $isRoot == false){
    // echo '<ul class="toc-section">';
     foreach ( $childPages as $child ) {
@@ -55,7 +56,7 @@ if (( $childPages) && $isRoot == false){
                 if ($first_page == $child){
                     echo '<li><a href='.get_permalink($grandChild).'>'.$grandChild->post_title.'</a><input type="checkbox" id="'.$grandChild->ID.'"  onclick="saveCheckbox(document.getElementById('.$grandChild->ID.'));"></li>';
                 }
-            } 
+            }
             $greatGrandChildren = getKids($grandChild->ID);
             if (count($greatGrandChildren) != 0){
                 echo '<li style="font-size:0.75em; color:red;">You have pages that may be deeper than allowed by this theme and will not appear. Make sure that pages only go 2 levels</li>';

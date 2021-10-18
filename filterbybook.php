@@ -6,7 +6,7 @@
   'Book Attributes',//Title:what will show in the top of the box
   'licenseSelectMetaBoxCreator',//Callback: Method called that contains what's inside the box
   'page',//Screen - post types that this appears on
-  'side',//where it appears 
+  'side',//where it appears
   'high',//priority of where the box appears (high or low)
   null//Callback args: provides arguments to callback function
 );
@@ -21,11 +21,11 @@ function licenseSelectMetaBoxCreator($post){
     flex-direction: column;
     align-items: left;
   }
-  
+
   #pageMetaBox > div{
     padding:5px;
   }
-  
+
   #pageMetaBox > div > p{
     margin-top:5px;
     margin-bottom:0px;
@@ -44,7 +44,7 @@ function licenseSelectMetaBoxCreator($post){
             $value = 'allrightsreserved';
             //consolePrint('License for this book: '.$value);
         }
-       
+
         //Add metabox for CC Licenses
         $licenseArray = array(
             'allrightsreserved',
@@ -58,20 +58,20 @@ function licenseSelectMetaBoxCreator($post){
         );?>
         <div id="pageMetaBox">
           <div>
-            <p>Select a License: </p> 
+            <p>Select a License: </p>
             <!-- <label for="licenseSelector">Select a License for this Book: :</label> -->
             <?php
-            
+
             echo '<select id="licenseSelector" name="licenseSelector">';
             foreach($licenseArray as $CCLicense){
            // echo '<tr><td>';
             //consolePrint('Checking '.$CCLicense.' and '.$value);
-            
+
             $isChecked = '';
             if(strcmp($CCLicense, $value) == 0)
             {
                 $isChecked = 'selected';
-            } 
+            }
             if ($CCLicense == 'allrightsreserved'){
                 echo '<option value="'.$CCLicense.'" '.$isChecked.'>All Rights Reserved</option>';
                 //echo '<input type="radio" name="licenseSelector" value="'.$CCLicense.'" '.$isChecked.'>All Rights Reserved</input>';
@@ -83,33 +83,33 @@ function licenseSelectMetaBoxCreator($post){
                 //echo '<input style="position: relative; bottom: 0.5em;" type="radio" name="licenseSelector" value="'.$CCLicense.'" '.$isChecked.'>'.$CCImageTag.' '.$CCDescription;
                 echo '<option style="background-image:url('.$CCimage.');" value="'.$CCLicense.'" '.$isChecked.'>'.$CCDescription.'</option>';
             }
-  
-           
+
+
         }?>
         </select>
       </div>
         <!--- ALLOW FEEDBACK --->
-        
-        <div>  
-          <?php $feedbackOn = get_post_meta( $post->ID, 'acceptFeedback', true ); 
+
+        <div>
+          <?php $feedbackOn = get_post_meta( $post->ID, 'acceptFeedback', true );
             if($feedbackOn == true)
             {
               consolePrint('Feedback Checked');
                 $isChecked = 'checked';
-            } 
+            }
             else{
               consolePrint('Feedback NOT Checked');
             }
-          
+
           echo '<input type="checkbox" id="acceptFeedback" name="acceptFeedback" '.$isChecked.'> Allow Voting';
 
           ?>
      </div>
         <!-- FOOTER TEXT -->
       <div>
-            <p>Custom Footer HTML</p> 
-        
-          <?php $footerText = get_post_meta( $post->ID, 'footerText', true );           
+            <p>Custom Footer HTML</p>
+
+          <?php $footerText = get_post_meta( $post->ID, 'footerText', true );
             if($footerText){
               echo '<textarea id="footerText" name="footerText" value="">'.$footerText.'</textarea>';
             }
@@ -120,14 +120,14 @@ function licenseSelectMetaBoxCreator($post){
           <p style="font-size:0.8em;">Default Text: Embedded videos, credited images / media are not inclusive of this license, so please check with the original creators if you wish to use them.</p>
           </div>
         </div>
-      
-     <?php 
+
+     <?php
     }
     else{
         echo('This is a subpage of a Book. To select a license go to a top-level page that serves as a book.');
         ?>
     <?php
-    } 
+    }
     // Don't forget about this, otherwise you will mess up with other data on the page
     wp_reset_postdata();
   }
@@ -159,12 +159,12 @@ function licenseSelectMetaBoxCreator($post){
   } else{
     delete_post_meta( $post_id, 'acceptFeedback');
   }
-  
-  
+
+
   // Checks for input and saves if needed
   if( isset( $_POST[ 'footerText' ] ) ) {
       update_post_meta( $post_id, 'footerText', $_POST[ 'footerText' ] );
-  } 
+  }
 
 }
 add_action( 'save_post', 'saveMeta' );
@@ -200,21 +200,21 @@ function addColumnsToParts($columns) {
               case 'votes' :
                 $bookRoot = getRootForPage($post);
 	              $root = get_post($bookRoot);
-                $feedbackOn = get_post_meta( $root->ID, 'acceptFeedback', true ); 
+                $feedbackOn = get_post_meta( $root->ID, 'acceptFeedback', true );
                 if($feedbackOn == true){
                   $voteData = getVoteData($post_id);
                   if ($voteData){
                     $fontAwesome = get_template_directory_uri().'/css/all.css';
-               
+
       ?>
                   <link rel="stylesheet" href="<?php echo $fontAwesome; ?>">
                   <?php
                   //consolePrint('Up: '.$voteData[0].' Down: '.$voteData[1]);
                   $totalCount = $voteData[0] + $voteData[1];
                   $percentage = $voteData[0]/$totalCount;
-                  $percentageValue =  round($percentage,2)*100; 
+                  $percentageValue =  round($percentage,2)*100;
                    echo '<p style="text-align:center;  margin-bottom:2px;">'.$voteData[0].' <i class="far fa-thumbs-up"></i> - '.$voteData[1].' <i class="far fa-thumbs-down"></i> - ('.$totalCount.')';
-                   
+
                     echo '<div id="vote-chart" style="padding-left:10px; width:100%; height:10px; border-radius:20px;background: rgb(220,112,108);
                     background: linear-gradient(90deg, rgba(103,216,173,1)'.$percentageValue.'%,rgba(220,112,108,1)'.$percentageValue.'%);">';
                    ?>
@@ -228,7 +228,7 @@ function addColumnsToParts($columns) {
                 else{
                   echo 'Voting not enabled. Edit main book page to enable.';
                 }
-        
+
                 break;
               case 'license' :
                   if (in_array($thePage, $allBooks)) {
@@ -245,16 +245,16 @@ function addColumnsToParts($columns) {
                           $CCimage = '/inc/images/'.$CCLicense.'.png';
                           echo '<a target="_blank" href="'.$CCLink.'"><img style="height:30px; width:auto; padding-top:5px;" src="'.get_template_directory_uri().$CCimage.'"/></a>';
                       }
-                      
+
                   }
                   break;
-              
-      
+
+
           }
   }
 
 /* --------------- ADD FILTER TO PAGES --------------- */
-   
+
 add_action( 'restrict_manage_posts', 'filterPageList' );
 
 function filterPageList($post_type){
@@ -306,7 +306,7 @@ function find_descendants($post_id) {
       );
   $pages = get_pages($args);
 
-  foreach ($pages as $page) { 
+  foreach ($pages as $page) {
     consolePrint('Adding to array: '.$page->post_title);
     array_push($descendant_ids, $page->ID); }
   return $descendant_ids;
@@ -318,9 +318,9 @@ function SearchFilter($query) {
   if (isset($_GET['post_type'])) {
       $type = $_GET['post_type'];
   }
-  if ( 'page' == $type && is_admin() 
-      && $pagenow=='edit.php' 
-      && isset($_GET['bookSelector']) 
+  if ( 'page' == $type && is_admin()
+      && $pagenow=='edit.php'
+      && isset($_GET['bookSelector'])
       && $_GET['bookSelector'] != ''
       && $query->is_main_query()
       ) {
@@ -335,7 +335,7 @@ function SearchFilter($query) {
 add_filter('pre_get_posts','SearchFilter');
 //Adds text above title
 add_action( 'load-edit.php', function(){
-    $screen = get_current_screen(); 
+    $screen = get_current_screen();
      // Only edit post screen:
     if( 'edit-page' === $screen->id )
     {
@@ -343,7 +343,7 @@ add_action( 'load-edit.php', function(){
          add_action( 'all_admin_notices', function(){
              echo '<p>Recommended Plugins to make life easier: <a href="https://wordpress.org/plugins/simple-page-ordering/" target="_blank">Simple Page Ordering</a>  |  <a href="https://wordpress.org/plugins/broken-link-checker/" target="_blank">Broken Link Checker</a></p>';
          });
- 
+
          // After:
         //  add_action( 'in_admin_footer', function(){
         //      echo '<p>Goodbye from <strong>in_admin_footer</strong>!</p>';

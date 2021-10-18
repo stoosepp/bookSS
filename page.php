@@ -15,47 +15,47 @@
 <?php get_header(); ?>
 <main id="primary" class="site-main">
 	<!--SIDEBAR -->
-	 <nav class="left-toc">
-		 <?php 
-		 if ( is_page() ) {
+	<nav class="left-toc">
+		<?php
+		if ( is_page() ) {
 			echo '<div id="toc-list">';
-			echo '<a id="home-icon" href="'.get_home_url().'"><i class="fas fa-home"></i></a>'; 
-			
+			echo '<a id="home-icon" href="'.get_home_url().'"><i class="fas fa-home"></i></a>';
 			$bookRoot = getRootForPage($post);
 			//PUT PHOTO HERE
 			$featured_img_url = get_the_post_thumbnail_url($bookRoot);
 			echo '<div class="book-image">';
 			if ($featured_img_url){
-				echo '<img  src="'.esc_url($featured_img_url).'" rel="lightbox">'; 
+				echo '<img  src="'.esc_url($featured_img_url).'" rel="lightbox">';
 			}
 			else{
 				$topLevelPages = getTopLevelPages();
-					$hueRotate = $key/count($topLevelPages);
-					echo '<img  style="filter:hue-rotate('.$hueRotate.'turn);" src="'.get_template_directory_uri().'/images/book-cover.jpg" rel="lightbox">'; 	
+				$hueRotate = $key/count($topLevelPages);
+				echo '<img  style="filter:hue-rotate('.$hueRotate.'turn);" src="'.get_template_directory_uri().'/images/book-cover.jpg" rel="lightbox">';
 			}
 			echo '</div>';
 			//BOOK TITLE
 			echo '<h1> <a href='.get_permalink($bookRoot).'>'.get_the_title($bookRoot).'</a></h1>';//Book Title
 			?>
 			<form class="search-form" action="/" method="get">
-			<!-- <label for="search">Search in <?php echo home_url( '/' ); ?></label> -->
 			<i class="far fa-search"></i>
 			<input type="text" name="s" id="search" placeholder="Search" value="<?php the_search_query(); ?>" />
-			</form><?php
+			</form>
+
+			<?php
 			get_template_part( 'template-parts/content-pagetoc', get_post_type() );
 			get_template_part( 'template-parts/content-switches', get_post_type() );
+
 		}
-		 ?>
-		 <!-- Rounded switch -->
+		?>
+		<!--Rounded Switch -->
 	</nav>
-	 <!--ARTICLE -->
-	 <div class="article">
+	<!--ARTICLE -->
+	<div class="article">
 
 	<!--ARTICLE TITLE / HEADER -->
-	<?php get_template_part( 'template-parts/content-breadcrumbs', get_post_type() );?>
+	<?php get_template_part('template-parts/content-breadcrumbs', get_post_type() );?>
 	<!--ARTICLE BODY -->
 	<div class="article-body">
-
 		<?php
 			if ( have_posts() ) :
 				if ( is_home() && ! is_front_page() ) :
@@ -65,14 +65,13 @@
 				/* Start the Loop */
 				while ( have_posts() ) :
 					?><a class="new-window-link" href="<?php echo the_permalink(); ?>" target="_blank">Open in New Window</a><?php
-
+					//get_template_part( 'template-parts/content-epubgenerator', get_post_type() );
 					the_post();
 					/*
 					* Include the Post-Type-specific template for the content.
 					* If you want to override this in a child theme, then include a file
 					* called content-___.php (where ___ is the Post Type name) and that will be used instead.
 					*/
-					
 					get_template_part( 'template-parts/content', get_post_type() );
 					get_template_part( 'template-parts/content-voting', get_post_type() );
 
@@ -80,16 +79,12 @@
 				the_posts_navigation();
 			else :
 				get_template_part( 'template-parts/content', 'none' );
-				
-
 			endif;
-			
 			get_footer();
 			?>
-		</div>	
+		</div>
 		<!--HEADING TOC AND SIDENOTES -->
 		<?php get_template_part( 'template-parts/content-headernav', get_post_type() ); ?>
-	
 	</div>
 </main><!-- #main -->
 

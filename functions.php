@@ -192,6 +192,7 @@ add_action('wp_enqueue_scripts', 'ww_load_dashicons');
 
 /* ---------------- CUSTOM STUFF---------------- */
 
+
 include 'filterbybook.php';
 
 add_theme_support( 'align-wide' );
@@ -229,7 +230,19 @@ function auto_id_headings( $content ) {
     }, $content );
     return $content;
     }
-	
+
+function preparePageContentForePub($content){
+	$pattern = "/\s*[a-zA-Z\/\/:\.]*youtu(be.com\/watch\?v=|.be\/)([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i";
+	$replacement = "<p><iframe src=\"http//www.youtube.com/embed/$2\" frameborder=\"0\"  allow=\"autoplay\" allowFullScreen=\"true\"></iframe></p>";
+	$replacement2 = "<object width=\"560\" height=\"315\"><param name=\"movie\" value=\"https://www.youtube.com/embed//$2?version=3&amp;hl=en_US\"></param><param name=\"allowFullScreen\" value=\"true\"></param><param name=\"allowscriptaccess\" value=\"always\"></param><embed src=\"https://www.youtube.com/embed/$2?version=3&amp;hl=en_US\" type=\"application/x-shockwave-flash\" width=\"560\" height=\"315\" allowscriptaccess=\"always\" allowFullScreen=\"true\"></embed></object>";
+	$replacement3 = "<video class=\"ePubVideo\" src=\"https://www.youtube.com/watch?v=$2&html5=True\" controls=\"controls\" >There is video content at this location that is not currently supported on your device. Please visit our website, <a href=\"http://www.example.com\">www.example.com</a>, to watch the videos on your computer.</video>";
+	// if (preg_match($pattern, $content,$matches)) {
+	// 	$replacement = $matches;
+	// }
+
+	return preg_replace($pattern,$replacement2,$content);
+
+}
 
 function getTopLevelPages(){
 	$query_args = array('parent' => 0, // required
@@ -243,7 +256,7 @@ function getTopLevelPages(){
 
 function getRootForPage($post){//gets book for the current page.
 	$bookRoot = new stdClass();
-	$thisPage = get_post($post->ID);	
+	$thisPage = get_post($post->ID);
 	if ($thisPage->post_parent)	{
 		$ancestors=get_post_ancestors($post->ID);
 		$root=count($ancestors)-1;
@@ -283,7 +296,7 @@ function removeHidden($categories){
 			else{
 				array_push($nonHiddenCategories,$category);
 			}
-			
+
 		}
 	}
 	return $nonHiddenCategories;
@@ -301,8 +314,8 @@ function consolePrint($string){
 	echo '<script>console.log("'.$string.'");</script>';
 }
 
-// if (isset($_GET['voteUp']) && isset($_GET['value'])){ 
-// 	return voteUp($_GET['value']); 
+// if (isset($_GET['voteUp']) && isset($_GET['value'])){
+// 	return voteUp($_GET['value']);
 // }
 
 /* VOTING - JQuery added in header */
@@ -349,22 +362,23 @@ function deleteAllPostMeta($post_id){
     delete_post_meta( $post_id, 'updown_votes');
 }
 
-/* CUSTOM SCRIPTS */
 
-if(!function_exists('load_my_script')){
-    function load_my_script() {
-        global $post;
-        $deps = array('jquery');
-        $version= '1.0'; 
-        $in_footer = true;
-        wp_enqueue_script('my-script', get_stylesheet_directory_uri() . '/js/my-script.js', $deps, $version, $in_footer);
-        wp_localize_script('my-script', 'my_script_vars', array(
-                'postID' => $post->ID
-            )
-        );
-    }
+/* GENERATE EPUB */
+
+add_action('wp_ajax_makeBook', 'makeBook');
+add_action('wp_ajax_nopriv_makeBook', 'makeBook');
+function makeBook(){
+    $postid= $_POST['id'];
+	//echo 'Making book from PageID: '.$postid;
+	$URL = get_template_directory_uri().'/template-parts/content-epubgenerator.php';
+	//echo $URL;
+	header("Location:".$URL);
+	//get_template_part('template-parts/content-epubgenerator.php', get_post_type() );
+	//test($postid);
 }
-add_action('wp_enqueue_scripts', 'load_my_script');
 
+function test($postid){
+	$post = get_post( $postid);
+	echo 'This is a test for '.get_the_title($postid);
+}
 
-?>

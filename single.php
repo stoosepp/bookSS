@@ -16,10 +16,10 @@
 <main id="primary" class="site-main">
 	<!--SIDEBAR -->
 	 <nav class="left-toc">
-		 <?php 
-		 
+		<?php
+
 		echo '<div id="toc-list">';
-		echo '<a id="home-icon" href="'.get_home_url().'"><i class="fas fa-home"></i></a>'; 
+		echo '<a id="home-icon" href="'.get_home_url().'"><i class="fas fa-home"></i></a>';
 		echo '<div class="book-image">';
 		echo '<img src="'.get_template_directory_uri().'/images/paper.jpg" rel="lightbox">';
 		echo '</div>';
@@ -37,7 +37,7 @@
 
 		 ?>
 		 <!-- Rounded switch -->
-		 
+
 	</nav>
 	 <!--ARTICLE -->
 	 <div class="article">
@@ -56,24 +56,24 @@
 				/* Start the Loop */
 				while ( have_posts() ) :
 					?><a class="new-window-link" href="<?php echo the_permalink(); ?>" target="_blank">Open in New Window</a><?php
-					
+
 					the_post();
-					
+
 					get_template_part( 'template-parts/content', get_post_type() );
-				
+
 				endwhile;
 				the_posts_navigation();
 			else :
 				get_template_part( 'template-parts/content', 'none' );
-				
+
 			endif;
-			
+
 			get_footer();
 			?>
-		</div>	
+		</div>
 		<!--HEADING TOC AND SIDENOTES -->
 		<?php get_template_part( 'template-parts/content-headernav', get_post_type() ); ?>
-	
+
 	</div>
 </main><!-- #main -->
 

@@ -19,18 +19,18 @@
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="profile" href="https://gmpg.org/xfn/11">
-	<?php 
+	<?php
 	if ( is_front_page() ) :
 		wp_enqueue_style( 'style', getcustomStylesheet('homepage') );
 	else :
-		
+
 	endif;?>
 	<?php wp_register_script( 'bookSS', get_template_directory_uri() . '/js/bookSS.js' );
 	wp_enqueue_script( 'bookSS' );
 
 	//Pass template URL over to the JS file
 	$translation_array = array( 'templateUrl' => get_stylesheet_directory_uri() );
-	wp_enqueue_style( 'style-switch', getcustomStylesheet('toggleswitch') ); 
+	wp_enqueue_style( 'style-switch', getcustomStylesheet('toggleswitch') );
 	wp_localize_script( 'bookSS', 'bookSSURL', $translation_array );
 	wp_enqueue_script("jquery");
 	?>
@@ -39,35 +39,35 @@
 	<link rel="stylesheet" id="bookSS-css" href="<?php echo get_template_directory_uri();?>/css/bookSS.css" media="all">
 	<link rel="stylesheet" id="default-css" href="<?php echo get_template_directory_uri();?>/css/default.css" media="all">
 	<link rel="stylesheet" id="fontawesome-css" href="<?php echo get_template_directory_uri();?>/css/all.css" media="all">
-	
-	
-	<?php 
+
+
+	<?php
 		$chromeless = sanitize_text_field( get_query_var( 'chromeless' ) );
 		//if( strtoupper( $chromeless) === 'true' ){
 		if( stripos( $chromeless,'true') !== false ){
-			
+
 			echo '<style>
 			nav.left-toc{
-				display:none; 
-			} 
+				display:none;
+			}
 			.sidenote{
 				position:relative;
-				float:right;     
+				float:right;
 				margin-left: 10px;
-			} 
+			}
 			aside{
 				display:none;
-			} 
+			}
 			.header-bar{
 				display:none;
 			}
 			.article-body{
-				margin-top:0px; 
-				margin-right:0px; 
+				margin-top:0px;
+				margin-right:0px;
 			}
 			.article-header{
-				display:none; 
-			} 
+				display:none;
+			}
 			.article{
 				margin-left:0em;
 			}

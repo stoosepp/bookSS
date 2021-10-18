@@ -44,32 +44,23 @@ if ($topLevelPages){?>
 			</form><?php
 	echo '<p class="content-type-header">BOOKS</p>';
 	echo '<ul class="book-list">';
+
 	foreach($topLevelPages as $key=>$topLevelPage){
-	
+
 		echo '<a href="'.get_permalink($topLevelPage).'">';
 		echo '<li><div class="book-cover"><div class="book-gradient"></div>';
 		echo '<div class="book-title"><h2>'.$topLevelPage->post_title.'</h2>';
-		
+
 		$post_author_id = get_post_field( 'post_author', $topLevelPage);
 		echo '<div class="book-authorexcerpt"><h3>'.get_the_author_meta('display_name', $post_author_id).'</h3>';
 		echo '<h4>'.$topLevelPage->post_excerpt.'</h4></div>';
 		$featured_img_url = get_the_post_thumbnail_url($topLevelPage);
-		/*if ($featured_img_url){
-			echo '<img src="'.esc_url($featured_img_url).'" rel="lightbox">'; 
-            //the_post_thumbnail('thumbnail');
-		}
-		else{
-				$hueRotate = $key/count($topLevelPages);
-				echo '<img style="filter:hue-rotate('.$hueRotate.'turn);" src="'.get_template_directory_uri().'/images/book-cover.jpg" rel="lightbox">'; 	
-		}*/
 		if ($featured_img_url){
-			echo '<img id="cover-image"src="'.esc_url($featured_img_url).'" rel="lightbox">'; 
-			
-            //the_post_thumbnail('thumbnail');
+			echo '<img id="cover-image"src="'.esc_url($featured_img_url).'" rel="lightbox">';
 		}
 		else{
 				$hueRotate = $key/count($topLevelPages);
-				echo '<img id="cover-image" style="filter:hue-rotate('.$hueRotate.'turn);" src="'.get_template_directory_uri().'/images/book-cover.jpg" rel="lightbox">'; 	
+				echo '<img id="cover-image" style="filter:hue-rotate('.$hueRotate.'turn);" src="'.get_template_directory_uri().'/images/book-cover.jpg" rel="lightbox">';
 		}
 		echo '</div></li>';
 		echo '</a>';
@@ -86,7 +77,7 @@ if ($topLevelPages){?>
 
     $categories = get_categories( $args );
 	$categories = removeHidden($categories);
-	
+
 	if ($categories){
 		echo '<p class="content-type-header">DOCUMENTS</p>';
 		echo '<ul class="cat-list">';
@@ -94,14 +85,14 @@ if ($topLevelPages){?>
 		$parentCatName = get_cat_name($category->parent);
 			echo '<li>';
 			echo '<h2>' . $category->name . '</h2>';
-			
+
 			$post_list = get_posts( array(
 				'orderby'    => 'date',
 				'sort_order' => 'desc',
 				'category' => $category->term_id
 			) );
 			?>
-	
+
 			<ul class="doc-list">
 				<?php foreach($post_list as $thisPost) { ?>
 					<a href="<?php echo get_permalink($thisPost); ?>"><li>
@@ -110,11 +101,11 @@ if ($topLevelPages){?>
 				<?php  } ?>
 			</ul>
 			</li>
-			<?php	
- 		} 
+			<?php
+ 		}
 echo '</ul>';
 	}
-	
+
 ?>
 
 

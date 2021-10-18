@@ -1,16 +1,32 @@
 <?php
 /**
  * Template part for displaying voting mechanism
- * 
+ *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
- * 
+ *
  */?>
  		<script>
+
 				jQuery(document).ready(function($){
-					const thisPostID = my_script_vars.postID;	
+				function get_current_page_id() {
+					var page_body = $('body.page');
+					var id = 0;
+					if(page_body) {
+						var classList = page_body.attr('class').split(/\s+/);
+						$.each(classList, function(index, item) {
+							if (item.indexOf('page-id') >= 0) {
+								var item_arr = item.split('-');
+								id =  item_arr[item_arr.length -1];
+								return false;
+							}
+						});
+					}
+					return id;
+				}
+				const thisPostID = get_current_page_id();
 				checkVoteStatus(thisPostID);
-				$('.votebutton').css('cursor', 'pointer'); 
+				$('.votebutton').css('cursor', 'pointer');
    				$('.votebutton').click(function(){ //if your upvote has class arrow?
 				var direction = 'up';
 				var classList = $(this).attr('class').split(/\s+/);
@@ -25,7 +41,7 @@
 				});
 				var ajaxscript = { ajax_url : '<?= get_bloginfo("wpurl"); ?>' + "/wp-admin/admin-ajax.php" }
 				var templateUrl = '<?= get_bloginfo("wpurl"); ?>' + "/wp-admin/admin-ajax.php";
-			
+
 				$.ajax({
 				type: "POST",
 					url: ajaxscript.ajax_url,
@@ -43,7 +59,7 @@
 						var percentage = parseInt($('#percentage').text());
 						var total = parseInt($('#totalCount').text());
 						var upVotes = Math.round((percentage/100) * total);
-						console.log('Upvotes are ' + upVotes);
+						//console.log('Upvotes are ' + upVotes);
 						total++;
 						if (direction == 'up'){
 							upVotes++;
@@ -55,20 +71,20 @@
 					}
 					else{
 						if (direction == 'up'){
-							console.log('Voted Up');
+							//console.log('Voted Up');
 							$("#vote-results").html('<span id="percentage">100</span>% of <span id="totalCount">1</span> voters found this helpful.');
 							$('#vote-chart').css({'background':'rgb(103,216,173)','height':'10px'});//Green
 						}
 						else{
-							console.log('Voted Down');
+							//console.log('Voted Down');
 							$("#vote-results").html('<span id="percentage">0</span>% of <span id="totalCount">1</span> voters found this helpful.');
 							$('#vote-chart').css({'background':'rgb(220,112,108)','height':'10px'});//Red
 						}
 					}
-						console.log(output);
+						//console.log(output);
 						jQuery('#postupvote').text(output); //write to correct id - maybe use postid in the id of the vote count on the page e.g. id="vote23" jQuery('#vote'+postid)
 					},
-					error : function(error){ console.log(error) 
+					error : function(error){ console.log(error)
 					}
 
 
@@ -81,24 +97,24 @@
 /* Voting */
 //deleteAllPostMeta($post->ID);//For Testing
  	$bookRoot = getRootForPage($post);
-	 $root = get_post($bookRoot);  
+	 $root = get_post($bookRoot);
 	 if (($post != $bookRoot) && is_page()) {
-		$feedbackOn = get_post_meta( $root->ID, 'acceptFeedback', true ); 
+		$feedbackOn = get_post_meta( $root->ID, 'acceptFeedback', true );
 		if($feedbackOn == true)
 		{
 			 ?>
 			 <div class="post-votes">
 			<div class="submit-vote">
-				<p>Did this chapter help you learn?</p>			
+				<p>Did this chapter help you learn?</p>
 				<i class="votebutton far fa-thumbs-up"></i>
 				<i class="votebutton far fa-thumbs-down"></i>
 			 </div>
 			<div class="did-vote hidden">
 				<p>Thank you for providing feedback.</p>
-		</div><?php 
+		</div><?php
 		$voteData = getVoteData($post->ID);
 				if ($voteData){
-				consolePrint('Up: '.$voteData[0].' Down: '.$voteData[1]);
+				//consolePrint('Up: '.$voteData[0].' Down: '.$voteData[1]);
 				$totalCount = $voteData[0] + $voteData[1];
 				$percentage = $voteData[0]/$totalCount;
 				$percentageValue =  round($percentage,2)*100; ?>
@@ -114,9 +130,9 @@
 					background: clear;"></div>';
 				}
 			 	?>
-				
+
 			</div><?php
-		} 
+		}
 	 }
-	 
+
 	?>

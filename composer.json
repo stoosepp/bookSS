@@ -15,8 +15,17 @@
         }
     ],
     "require": {
-        "php": ">=5.6"
+        "grandt/phpepub": ">=4.0.7",
+        "php": ">=5.6",
+        "phpzip/phpzip": ">=2.0.7"
+        },
+    "autoload": {
+        "psr-4": {
+            "PHPePub\\": "/src/PHPePub"
+        }
     },
+
+
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
         "wptrt/wpthemereview": "^0.2.1",

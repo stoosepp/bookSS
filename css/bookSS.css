@@ -1,5 +1,5 @@
 @media only screen and (max-width: 480px){
- 
+
   .article {
     margin-left:0em;
     transition: margin 0.5s;
@@ -11,7 +11,7 @@
     padding-bottom: 0px !important;
 
   }
- 
+
   .next-prev{
     width:2em !important;
   }
@@ -23,7 +23,7 @@
     width:100%;
     position:absolute;
   }
- 
+
   aside{
     display:none;
   }
@@ -96,7 +96,7 @@
   .sidenote {
     width: 14em;
     position: absolute;
-  
+
   }
   #header-left a{
     display:none
@@ -127,7 +127,7 @@
   .header-bar{
     padding-right:16em;
   }
- 
+
   .article {
     margin-left:16em;
     transition: margin 0.5s;
@@ -139,8 +139,8 @@
     margin-top:50px;
     padding-bottom: 0px !important;
   }
- 
-  
+
+
   .left-toc {
     transition: margin 0.5s;
     align-items: stretch;
@@ -158,7 +158,7 @@
   .sidenote {
     width: 14em;
     position: absolute;
-  
+
   }
   .home-search{
     width:30%;
@@ -180,7 +180,7 @@
   margin-left: 0px !important;
 }
 .banner-padding {
-  padding-right:0em !important; 
+  padding-right:0em !important;
 }
 
 @media (prefers-color-scheme:dark){
@@ -197,7 +197,7 @@
   .sidenote{
     box-shadow: none !important;
   }
-  
+
 }
 
 /* ------------------------------ END OF MEDIA QUERIES ------------------------------ */
@@ -222,7 +222,7 @@ figcaption{
 }
 
 body {
- 
+
   margin:0px;
   visibility: hidden;
   /*opacity: 0;*/
@@ -311,7 +311,7 @@ h1.entry-title{
   text-decoration:none;
   font-weight:300;
   color:gray;
-  
+
   text-overflow: ellipsis;
 }
 #header-left > i{
@@ -345,8 +345,8 @@ h1.entry-title{
 }
 
 #header-options i{
-  padding-right:15px;
-
+  padding-right:7.5px;
+  padding-left:7.5px;
 }
 
 #header-right a{
@@ -376,7 +376,7 @@ color: gray;
 
 .disabled-arrow{
   color: lightgray;
-  
+
 }
 #header-right > i{
   line-height: 1.5em;
@@ -401,7 +401,7 @@ color: gray;
   height: 3px;
   background: #0071bc ;
   width: 0%;
- 
+
 }
 /* TOC Left Sidebar */
 
@@ -435,7 +435,7 @@ color: gray;
     padding-bottom:100%;
     overflow:hidden;
     position:relative;
-  
+
   }
 
 .book-image img{
@@ -472,9 +472,9 @@ color: gray;
 #toc-list .dashicons{
   font-size: 1.2em;
 }
- 
+
 form.search-form{
-  border-bottom: 0.5px #eee solid; 
+  border-bottom: 0.5px #eee solid;
 }
 
 
@@ -531,7 +531,7 @@ ul.toc-section {
 }
 
 ul.toc-section li{
-  
+
   margin-bottom: 15px;
   margin-top: 20px;
   display:flex;
@@ -544,12 +544,12 @@ ul.toc-section li{
 ul.toc-section li > a{
   color:rgb(77,77,77);
   font-weight:600;
-  
+
 }
 ul.toc-section li > input[type="checkbox"]{
   /* margin-top:0.3em; */
   opacity: 0.3;
-  
+
 }
 
 /* SUBSECTION */
@@ -557,7 +557,7 @@ ul.toc-subsection {
   list-style-type: none;
   margin:0px;
   padding-left: 0px;
- text-transform:capitalize; 
+ text-transform:capitalize;
  line-height: 1.2em;
 }
 
@@ -652,7 +652,7 @@ div#colorScheme{
   height: 40px;
   width: 40px;
   stroke: #eee;
-  
+
   border-radius: 50%;
      -moz-box-shadow:     0 0 2px gray;
    -webkit-box-shadow:  0 0 2px gray;
@@ -701,7 +701,7 @@ background-color: rgb(39, 39, 39);
   /* padding-top: 2.5em;
     margin-top: -1.5em;
     line-height: 1.2em*/
-} 
+}
 
 
 ul.page-sidebar-list {
@@ -755,7 +755,7 @@ li.header-margin-link {
 }
 
 li.header-margin-link a:hover {
-  color: #0071bc; 
+  color: #0071bc;
   font-weight: 500px;
 }
 .header-margin-link a, .header-margin-link a:visited {
@@ -769,7 +769,7 @@ li.header-margin-link a:hover {
 
   right: 0px;
   padding: 7.5px;
-  
+
   border-style: solid;
   border-width: 0.5px;
   border-color: #eee;
@@ -872,11 +872,11 @@ margin-left:16em;
 
  #search-title{
   margin:0px;
-  color:black; 
+  color:black;
   font-size:1.5em !important;
   line-height:1.2;
   margin-bottom: 1em;
-  
+
   text-align:center;
  }
 
@@ -956,7 +956,7 @@ padding:1em;
 }
 
 #search-results > div > div.article-body > h2{
-  
+
   margin-top:50px;
   line-height: 1.2;
 }
