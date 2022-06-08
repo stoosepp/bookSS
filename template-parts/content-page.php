@@ -8,7 +8,15 @@
  */
 
 ?>
+<?php
+//Testing EPub
+$sample_string = '<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">https://youtu.be/8pmJNuxyvpA</div></figure>';
+//$sample_string = '<p>https://youtu.be/8pmJNuxyvpA</p>';
+$finalString = preparePageContentForePub($sample_string);
+echo '<h1>Testing String Parsing</h1>';
+echo $finalString;
 
+?>
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<header class="entry-header">
 		<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>

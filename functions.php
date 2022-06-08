@@ -231,16 +231,33 @@ function auto_id_headings( $content ) {
     return $content;
     }
 
-function preparePageContentForePub($content){
-	$pattern = "/\s*[a-zA-Z\/\/:\.]*youtu(be.com\/watch\?v=|.be\/)([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i";
-	$replacement = "<p><iframe src=\"http//www.youtube.com/embed/$2\" frameborder=\"0\"  allow=\"autoplay\" allowFullScreen=\"true\"></iframe></p>";
-	$replacement2 = "<object width=\"560\" height=\"315\"><param name=\"movie\" value=\"https://www.youtube.com/embed//$2?version=3&amp;hl=en_US\"></param><param name=\"allowFullScreen\" value=\"true\"></param><param name=\"allowscriptaccess\" value=\"always\"></param><embed src=\"https://www.youtube.com/embed/$2?version=3&amp;hl=en_US\" type=\"application/x-shockwave-flash\" width=\"560\" height=\"315\" allowscriptaccess=\"always\" allowFullScreen=\"true\"></embed></object>";
-	$replacement3 = "<video class=\"ePubVideo\" src=\"https://www.youtube.com/watch?v=$2&html5=True\" controls=\"controls\" >There is video content at this location that is not currently supported on your device. Please visit our website, <a href=\"http://www.example.com\">www.example.com</a>, to watch the videos on your computer.</video>";
-	// if (preg_match($pattern, $content,$matches)) {
-	// 	$replacement = $matches;
-	// }
+function preparePageContentForePub($input){
 
-	return preg_replace($pattern,$replacement2,$content);
+	//$replacedFinalText = preg_replace($pattern,$replacement,$originalcontent);
+	//$allowedTags = strip_tags($input, '<p><a><h1><h2><h3><h4><h5><image><iframe>');
+
+	$pattern = "/^(?:http(?:s)?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user|shorts)\/))([^\?&\"'>]+)/";
+
+	preg_match($pattern, $input, $matches);
+
+		print('shit');
+		foreach ($matches as $matchDeets){
+			echo $matchDeets[0];
+			foreach ($matchDeets as $match){
+				echo $match[0];
+			}
+
+
+		}
+
+
+
+	//$input = strip_tags($input);
+	$input = html_entity_decode($input);
+
+	$final_string  = preg_replace($pattern,"<iframe width=\"100%\" height=\"500\" src=\"//www.youtube.com/embed/$1\" frameborder=\"0\" allowfullscreen></iframe>",$input);
+
+	return $final_string;
 
 }
 
