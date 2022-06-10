@@ -233,30 +233,18 @@ function auto_id_headings( $content ) {
 
 function preparePageContentForePub($input){
 
-	//$replacedFinalText = preg_replace($pattern,$replacement,$originalcontent);
-	//$allowedTags = strip_tags($input, '<p><a><h1><h2><h3><h4><h5><image><iframe>');
 
-	$pattern = "/^(?:http(?:s)?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user|shorts)\/))([^\?&\"'>]+)/";
+	//Remove all figure stuff around
+	$patterns = array();
+	$replacements = array();
 
-	preg_match($pattern, $input, $matches);
+	//Replace Youtube Links with Embed Code
+	$patterns[0] = "/(?:http(?:s)?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user|shorts)\/))([^\?&\"'<]+)/s";
+	$replacements[0] = "<a target=\"_blank\" href=\"https://www.youtube.com/watch?v=$1\"><div class=\"epub-video\"><i class=\"far fa-video\"></i>Watch Video</div></a>";
 
-		print('shit');
-		foreach ($matches as $matchDeets){
-			echo $matchDeets[0];
-			foreach ($matchDeets as $match){
-				echo $match[0];
-			}
+	$final_string  = preg_replace($patterns,$replacements,$input);
 
-
-		}
-
-
-
-	//$input = strip_tags($input);
-	$input = html_entity_decode($input);
-
-	$final_string  = preg_replace($pattern,"<iframe width=\"100%\" height=\"500\" src=\"//www.youtube.com/embed/$1\" frameborder=\"0\" allowfullscreen></iframe>",$input);
-
+	//$final_string = html_entity_decode($input);
 	return $final_string;
 
 }

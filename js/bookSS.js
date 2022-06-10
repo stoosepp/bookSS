@@ -362,8 +362,14 @@ window.addEventListener('scroll', function(){
 
 function toggleHidden(el){
     if ((el.firstChild.classList.contains('fa-comment-alt') == true) || (el.firstChild.classList.contains('fa-times') == true)){
+        console.log('Clicked Comment Button');
         $feedbackForm = document.getElementsByClassName('custom-feedbackform')[0];
         $feedbackForm.classList.toggle('hidden');
+    }
+    else if ((el.firstChild.classList.contains('fa-download') == true)|| (el.firstChild.classList.contains('fa-book') == true)){
+        console.log('Clicked Download Button');
+        $downloadbook = document.getElementsByClassName('custom-downloadbook')[0];
+        $downloadbook.classList.toggle('hidden');
     }
     else if ((el.firstChild.classList.contains('fa-arrow-left') == true)|| (el.firstChild.classList.contains('fa-bars') == true)){
 

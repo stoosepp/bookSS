@@ -24,20 +24,20 @@ function custom_comment_field( $fields ) {
     $comment_field = $fields['comment'];
     $comment_field = $fields['url'];
     $comment_field = $fields['cookies'];
- 
+
     // The fields you want to unset (remove).
     unset($fields['author']);
     unset($fields['email']);
     unset($fields['url']);
     unset($fields['comment']);
     unset($fields['cookies']);
-  
+
     $fields['name'] = null;
     $fields['email'] = null;
     $fields['comment'] = '<p class="comment-form-comment"><label for="comment">Any suggestions for changes, additions or other ideas are welcome. Thank you!<span class="required"></span></label><textarea id="comment" name="comment" required="required" placeholder="Your suggestions here."></textarea></p>';
     return $fields;
 }?>
 <div class="custom-feedbackform hidden">
-    <a href="#" class = "" onclick="toggleHidden(this);"><i class="far fa-times"></i></a>
+    <a style="cursor:pointer;"  class = "" onclick="toggleHidden(this);"><i class="far fa-times"></i></a>
     <?php  echo comment_form(); ?>
 </div>

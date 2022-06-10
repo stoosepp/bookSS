@@ -39,13 +39,16 @@ $site_title = get_bloginfo( 'name' );
 $site_url = network_site_url( '/' );
 
 $thisChapter = get_post($pageID);
-$thisBookID = getRootForPage($thisChapter);
+$thisBookID = $pageID;
+
+if ($thisChapter->post_parent) {
+    // This is a subpage
+    $thisBookID = getRootForPage($thisChapter);
+}
+
 $thisBook = get_post($thisBookID);
 $bookTitle = get_the_title($thisBookID);
-//echo 'Book Title: '.$bookTitle.'<br/>';
-//echo 'Book ID: '.$thisBookID.'<br/>';
 $bookIndex = $thisBook->menu_order;
-//echo 'Book Order: '.$bookIndex.'<br/>';
 $bookURL = get_permalink($thisBookID);
 
 //Author Name
@@ -68,7 +71,7 @@ else{
 $fileDir = './PHPePub';
 $log = new Logger("Example", TRUE);
 //$book = new EPub(); // no arguments gives us the default ePub 2, lang=en and dir="ltr"
-$book = new EPub(EPub::BOOK_VERSION_EPUB3, "en", EPub::DIRECTION_LEFT_TO_RIGHT); // Default is ePub 2
+$ePubBook = new EPub(EPub::BOOK_VERSION_EPUB3, "en", EPub::DIRECTION_LEFT_TO_RIGHT); // Default is ePub 2
 
 
 /* ------ SET PARAMTERS -----*/
@@ -78,11 +81,11 @@ $book = new EPub(EPub::BOOK_VERSION_EPUB3, "en", EPub::DIRECTION_LEFT_TO_RIGHT);
 // RenditionHelper::setOrientation($book, RenditionHelper::ORIENTATION_AUTO);
 // RenditionHelper::setSpread($book, RenditionHelper::SPREAD_AUTO);
 
-IBooksHelper::addPrefix($book);
-IBooksHelper::setIPadOrientationLock($book, IBooksHelper::ORIENTATION_PORTRAIT_ONLY);
-IBooksHelper::setIPhoneOrientationLock($book, IBooksHelper::ORIENTATION_PORTRAIT_ONLY);
-IBooksHelper::setSpecifiedFonts($book, true);
-IBooksHelper::setFixedLayout($book, true);
+IBooksHelper::addPrefix($ePubBook);
+IBooksHelper::setIPadOrientationLock($ePubBook, IBooksHelper::ORIENTATION_PORTRAIT_ONLY);
+IBooksHelper::setIPhoneOrientationLock($ePubBook, IBooksHelper::ORIENTATION_PORTRAIT_ONLY);
+IBooksHelper::setSpecifiedFonts($ePubBook, true);
+IBooksHelper::setFixedLayout($ePubBook, true);
 $log->logLine("Set up parameters");
 
 /* ------ START BOOK CONSTRUCTION -----*/
@@ -96,8 +99,10 @@ $content_start =
 . "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n"
 . "<head>"
 . "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n"
-. "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\" />\n"
-//. "<title>Test Book</title>\n"
+//. "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\" />\n"
+. "<link rel=\"stylesheet\" type=\"text/css\" href=\"ePub.css\" />\n"//ePub
+. "<link rel=\"stylesheet\" type=\"text/css\" href=\"all.css\" />\n"//all
+. "<link rel=\"stylesheet\" type=\"text/css\" href=\"bookSS.css\" />\n"//BookSS
 . "<title>".$bookTitle."</title>\n"
 . "</head>\n"
 . "<body>\n";
@@ -111,136 +116,210 @@ date_default_timezone_set('Europe/Berlin');
 $log->logLine("new EPub()");
 // Title and Identifier are mandatory!
 //$book->setTitle("Simple Test book");
-$book->setTitle($bookTitle);
+$ePubBook->setTitle($bookTitle);
 
 //$book->setIdentifier("http://JohnJaneDoePublications.com/books/TestBookSimple.html", EPub::IDENTIFIER_URI); // Could also be the ISBN number, preferrd for published books, or a UUID.
-$book->setIdentifier($bookURL, EPub::IDENTIFIER_URI); // Could also be the ISBN number, preferrd for published books, or a UUID.
+$ePubBook->setIdentifier($bookURL, EPub::IDENTIFIER_URI); // Could also be the ISBN number, preferrd for published books, or a UUID.
 
-$book->setLanguage("en"); // Not needed, but included for the example, Language is mandatory, but EPub defaults to "en". Use RFC3066 Language codes, such as "en", "da", "fr" etc.
+$ePubBook->setLanguage("en"); // Not needed, but included for the example, Language is mandatory, but EPub defaults to "en". Use RFC3066 Language codes, such as "en", "da", "fr" etc.
 
-$book->setDescription("This is a brief description\nA test ePub book as an example of building a book in PHP");
+$ePubBook->setDescription("This is a brief description\nA test ePub book as an example of building a book in PHP");
 
 //$book->setAuthor("John Doe Johnson", "Johnson, John Doe");
-//NAME DOESNT WORK 17/10/2021
+
+//TESTING 9/6/22
+$post_author_id = get_post_field( 'post_author', $thisBookID);
+$fname = get_the_author_meta('first_name', $post_author_id);
+$lname = get_the_author_meta('last_name', $post_author_id);
+$full_name = "";
 if( empty($fname)){
     $full_name = $lname;
-    $book->setAuthor($full_name, $full_name);
+    $ePubBook->setAuthor($full_name, $full_name);
 } elseif( empty( $lname )){
     $full_name = $fname;
-    $book->setAuthor($full_name, $full_name);
+    $ePubBook->setAuthor($full_name, $full_name);
 } else {
     //both first name and last name are present
     $full_name = "{$fname} {$lname}";
-    $book->setAuthor($full_name, $full_reversed);
+    $ePubBook->setAuthor($full_name, $full_reversed);
 }
 
 //$book->setPublisher("John and Jane Doe Publications", "http://JohnJaneDoePublications.com/"); // I hope this is a non existent address :)
-$book->setPublisher($site_title, $site_url); // I hope this is a non existent address :)
+$ePubBook->setPublisher($site_title, $site_url); // I hope this is a non existent address :)
 
-$book->setDate(time()); // Strictly not needed as the book date defaults to time().
+$ePubBook->setDate(time()); // Strictly not needed as the book date defaults to time().
 
 //$book->setRights("Copyright and licence information specific for the book.");
-$book->setRights($licenseText);
+$ePubBook->setRights($licenseText);
 
 //$book->setSourceURL("http://JohnJaneDoePublications.com/books/TestBookSimple.html");
-$book->setSourceURL($bookURL);
+$ePubBook->setSourceURL($bookURL);
 
 // Insert custom meta data to the book, in this case, Calibre series index information.
 //CalibreHelper::setCalibreMetadata($book, "PHPePub Test books", "5");
-CalibreHelper::setCalibreMetadata($book, $site_title, $bookIndex);
+CalibreHelper::setCalibreMetadata($ePubBook, $site_title, $bookIndex);
 
-$book->isGifImagesEnabled = TRUE;
+$ePubBook->isGifImagesEnabled = TRUE;
 
-// A book need styling, in this case we use static text, but it could have been a file.
+// Add CSS
 //$cssData = "body {\n  margin-left: .5em;\n  margin-right: .5em;\n  text-align: justify;\n}\n\np {\n  font-family: serif;\n  font-size: 10pt;\n  text-align: justify;\n  text-indent: 1em;\n  margin-top: 0px;\n  margin-bottom: 1ex;\n}\n\nh1, h2 {\n  font-family: sans-serif;\n  font-style: italic;\n  text-align: center;\n  background-color: #6b879c;\n  color: white;\n  width: 100%;\n}\n\nh1 {\n    margin-bottom: 2px;\n}\n\nh2 {\n    margin-top: -2px;\n    margin-bottom: 2px;\n}\n";
 //$book->addCSSFile("styles.css", "css1", $cssData);
+$log->logLine("Add css");
 
 $ePubCSS = file_get_contents(dirname(__FILE__) . "/../css/ePub.css");
-$book->addCSSFile("styles.css", "css1", $ePubCSS);
+$ePubBook->addCSSFile("ePub.css", "ePub", $ePubCSS);
+$all = file_get_contents(dirname(__FILE__) . "/../css/all.css");
+$ePubBook->addCSSFile("all.css", "all", $all);
+$bookSS = file_get_contents(dirname(__FILE__) . "/../css/bookSS.css");
+$ePubBook->addCSSFile("bookSS.css", "bookSS", $bookSS);
+//$ePubBook->addCSSFile("styles.css", "css1", $ePubCSS);
 
-// Add cover page
-//$cover = $content_start . "<h1>Test Book</h1>\n<h2>By: John Doe Johnson</h2>\n" . $bookEnd;
-$cover = $content_start.'<h1>'.$bookTitle.'</h1><br /><h2>By: '.$full_name.'</h2><br />' . $bookEnd;
-$book->addChapter("Notices", "Cover.html", $cover);
-
-//Add TOC
-$book->buildTOC();
+//Add Default CSS for Books
+// $bookSSCSS = file_get_contents(dirname(__FILE__) . "/../css/bookSS.css");
+// $ePubBook->addCSSFile("bookSS.css", "bookSS", $bookSSCSS);
 
 
+//Add Cover Image
+$log->logLine("Add Cover Image");
+ $bookImageURL = get_the_post_thumbnail_url($thisBook);
+if ($bookImageURL){
+//CROPPING TO BOOK SIZE
+/*
+   $im =  imagecreatefromstring(file_get_contents($bookImageURL));
+    $size = min(imagesx($im), imagesy($im));
+    print
+    $im2 = imagecrop($im, ['x' => 0, 'y' => 0, 'width' => 600, 'height' => 800]);
+    if ($im2 !== FALSE) {
+        imagepng($im2, 'example-cropped.png');
+        //imagedestroy($im2);
+    }
+    imagedestroy($im);
+    $imageData = base64_encode($im2);
+    $ePubBook->setCoverImage("Cover.jpg",$imageData);
+*/
+    //THIS WORKS
+   $ePubBook->setCoverImage("Cover.jpg", file_get_contents($bookImageURL), "image/jpeg");
+}
+
+ //Cover Content - NOT APPLICABLE AS THE ABOVE WILL DEAL WITH THE COVER FOR ANY EREADER APP
+ /*
+ $cover = $content_start;
+ $cover .= '<div class="book-cover"><div class="book-gradient"></div>';
+ $cover .= '<div class="book-title"><h1>'.$bookTitle.'</h1>';
+
+$post_author_id = get_post_field( 'post_author', $thisBook);
+$cover .=  '<div class="book-authorexcerpt"><h2>'.get_the_author_meta('display_name', $post_author_id).'</h2>';
+$cover .=  '<h3>'.$bookTitle->post_excerpt.'</h3></div>';
+		if ($bookImageURL){
+			$cover .= '<img id="cover-image" src="'.esc_url($bookImageURL).'" rel="lightbox">';
+		}
+		$cover .= '</div></li>';
+		$cover .= '</a>'. $bookEnd;;
+$ePubBook->addChapter("Cover", "Cover.html", $cover,FALSE, EPub::EXTERNAL_REF_ADD);
+*/
+
+
+
+//BUILDING BOOK CHAPTERS
+
+//The order of the following is to addChapter($titleString,$ChapterFileName,$chapterContent,$autosplitChapter,$externalReferences)
+//$book->addChapter("Chapter 2: Vivamus bibendum massa", "Chapter002.html", $chapter2, true, EPub::EXTERNAL_REF_ADD);
+
+//FRONT MATTER
+    $chapterTitle = "Front Matter";
+    $cleanChapterTitle = preg_replace("/[^a-zA-Z0-9\s]/", "", $chapterTitle);
+
+    //Start Chapter Content
+    $thisChapterContent = '<h1>'.$chapterTitle.'</h1>';
+
+    //Featured image Of Title
+    $featured_img_url = get_the_post_thumbnail_url($thisBook);
+    if ($featured_img_url){
+        $chapterContent .= '<img src="'.esc_url($featured_img_url).'" />';
+    }
+
+    //Prepare and Clean Content
+    $rawChapterContent = $thisBook->post_content;
+    $thisChapterContent .= preparePageContentForePub($rawChapterContent);
+
+    //Adding Chapter
+    $ePubBook->addChapter($chapterTitle, $cleanChapterTitle.".html", $content_start . $thisChapterContent . $bookEnd, FALSE, EPub::EXTERNAL_REF_ADD);
+
+    //Add TOC
+//$ePubBook->buildTOC();
+$ePubBook->buildTOC(NULL, "toc", "Table of Contents", TRUE, TRUE);
+
+//CHAPTERS
 $chapters = getKids($thisBookID);
 $chapterNo = 1;
 if ( $chapters){
     foreach ( $chapters as $chapter ) {
-    //for ($i = 0; $i < count($chapters); $i++) {
-        //$thisChapter = $chapters[i];
-        $chapterTitle = get_the_title($chapter);
-        $cleanchapterTitle = str_replace(' ', '', $chapterTitle);
-        //$thisChapterContent = $content_start . '<h1>'.$chapterTitle.'</h1><p>Chapter Test Content</p>' . $bookEnd ;
 
+        //Chapter Title
+        $chapterTitle = get_the_title($chapter);
+        //$cleanChapterTitle = str_replace(' ', '', $chapterTitle);
+        $cleanChapterTitle = preg_replace("/[^a-zA-Z0-9\s]/", "", $chapterTitle);
+
+        //Start Chapter Content
         $thisChapterContent = '<h1>'.$chapterNo.'. '.$chapterTitle.'</h1>';
-        //Test Content
+
+        //Featured image Of Title
         $featured_img_url = get_the_post_thumbnail_url($thisChapter);
         if ($featured_img_url){
            $chapterContent .= '<img src="'.esc_url($featured_img_url).'" />';
         }
 
-        //Prepare Content
-        //$thisChapterContent = $chapter->post_content ;
-        $rawChapterContent = $chapter->post_content ;
+        //Prepare and Clean Content
+        $rawChapterContent = $chapter->post_content;
 		$thisChapterContent .= preparePageContentForePub($rawChapterContent);
 
-        //Prep for Adding Chapter
-        $book->addChapter($chapterNo.'. '.$chapterTitle, $cleanchapterTitle.".html", $content_start . $thisChapterContent . $bookEnd, FALSE, EPub::EXTERNAL_REF_ADD);
+        //Adding Chapter
+        $ePubBook->addChapter($chapterNo.'. '.$chapterTitle, $cleanChapterTitle.".html", $content_start . $thisChapterContent . $bookEnd, FALSE, EPub::EXTERNAL_REF_ADD);
 
         $subChapterNo = 1;
-/*
-        $book->subLevel();
-        $subChapters = getKids($chapter);
-        foreach ($subChapters as $subChapter){
 
-            $book->addChapter("Chapter 4.1: test inlined chapter", "Chapter004.xhtml#sub01");//Add Chapter code here
-            $subChapterNo++;
+       $subChapters = getKids($chapter->ID);
+       $log->logLine('There are '.count($subChapters).' subchapters in '.$chapterTitle);
+
+        if ( $subChapters){
+            $subChapterNo = 1;
+            $ePubBook->subLevel();
+            foreach ($subChapters as $subChapter){
+
+                //Title
+                $subChapterTitle = get_the_title($subChapter);
+                //$cleanSubChapterTitle = str_replace(' ', '', $subChapterTitle);
+                $cleanSubChapterTitle = preg_replace("/[^a-zA-Z0-9\s]/", "", $subChapterTitle);
+
+                 //Start Chapter Content
+                $thisSubChapterContent = '<h1>'.$chapterNo.'.'.$subChapterNo.'. '.$subChapterTitle.'</h1>';
+
+                //Chapter Content
+                $rawSubChapterContent = $subChapter->post_content;
+                $thisSubChapterContent .= preparePageContentForePub($rawSubChapterContent);
+
+                //Adding Chapter
+                $ePubBook->addChapter($chapterNo.'.'.$subChapterNo.'. '.$subChapterTitle, $cleanSubChapterTitle.".html", $content_start . $thisSubChapterContent . $bookEnd, FALSE, EPub::EXTERNAL_REF_ADD);
+
+                $subChapterNo++;
+            }
+            $ePubBook->backLevel();
         }
-        $book->backLevel();
-        */
+
         $chapterNo++;
     }
 }
 
-/*
-$chapter1 = $content_start . "<h1>Chapter 1</h1>\n"
-    . "<h2>Lorem ipsum</h2>\n"
-    . "<p>Lorem ipsum dolor sit <!-- test comment -->amet, consectetur adipiscing elit. Donec magna lorem, mattis sit amet porta vitae, consectetur ut eros. Nullam id mattis lacus. In eget neque magna, congue imperdiet nulla. Aenean erat lacus, imperdiet a adipiscing non, dignissim eget felis. Nulla facilisi. Vivamus sit amet lorem eget mauris dictum pharetra. In mauris nulla, placerat a accumsan ac, mollis sit amet ligula. Donec eget facilisis dui. Cras elit quam, imperdiet at malesuada vitae, luctus id orci. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Pellentesque eu libero in leo ultrices tristique. Etiam quis ornare massa. Donec in velit leo. Sed eu ante tortor.</p>\n"
-    . "<p>Nullam at tempus enim. Nunc et augue non lectus consequat rhoncus ac a odio. Morbi et tellus eget nisi volutpat tincidunt. Curabitur tristique neque tincidunt purus blandit bibendum. Maecenas eleifend sem quis magna semper id pulvinar nisi porttitor. In in lectus accumsan eros tristique pharetra sit amet ac nulla. Nam vitae felis et orci congue porta nec non ipsum. Donec pretium blandit accumsan. In aliquam lacinia nisi, ut venenatis mauris condimentum ut. Morbi rutrum orci et nisl accumsan euismod. Etiam viverra luctus sem pellentesque suscipit. Aliquam ultricies egestas risus at eleifend. Ut lacinia, tortor non varius malesuada, massa diam aliquet augue, vitae tempor metus tellus eget diam. Nulla vel augue eu elit adipiscing egestas. Duis et nulla est, ac congue arcu. Phasellus semper, ipsum et blandit rutrum, erat ante semper quam, at iaculis quam tellus sed neque.</p>\n"
-    . "<p>Pellentesque vulputate sollicitudin justo, at <!-- < !-- we -- > -->faucibus nisl convallis in. Nulla facilisi. Curabitur nec mauris eu justo ultricies ultricies gravida eu ipsum. Pellentesque at nunc velit, vitae congue nisl. Nam varius imperdiet leo eu accumsan. Nullam elementum fermentum diam euismod porttitor. Etiam sed pellentesque ante. Donec in est elementum mi tempor consectetur. Fusce orci lorem, mollis at tincidunt eget, fringilla sed nunc. Ut consectetur condimentum condimentum. Phasellus sed felis non massa gravida euismod ut in tellus. Curabitur suscipit pharetra sapien vitae dignissim. Morbi id arcu nec ante viverra lobortis vitae nec quam. Mauris id gravida odio. Nunc non sem nisi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Pellentesque hendrerit volutpat nisl id elementum. Vivamus lobortis iaculis nisi, sit amet tristique risus porttitor vel. Suspendisse potenti.</p>\n"
-    . "<p>Quisque aliquet sapien leo, vitae eleifend dolor. Fusce quis tincidunt nunc. Nam nec purus nulla, ac eleifend lorem. Curabitur eu quam et nibh egestas mattis. Maecenas eget felis augue. Integer scelerisque commodo urna, a pulvinar tortor euismod et. Praesent in nunc sapien. Ut iaculis auctor neque, sit amet rutrum est faucibus vitae. Sed a sagittis quam. Quisque interdum luctus fringilla. Vestibulum vitae nunc in felis luctus ultricies at id magna. Nam volutpat sapien ac lorem interdum pellentesque. Suspendisse faucibus, leo vitae laoreet interdum, mi mi pulvinar neque, sit amet tristique sapien nulla nec dolor. Etiam non ligula augue.</p>\n"
-    . "<p>Vivamus purus elit, ornare eget accumsan ut, luctus et orci. Sed vestibulum turpis ut quam vehicula id hendrerit velit suscipit. Pellentesque pulvinar, libero vitae sagittis scelerisque, felis ante faucibus risus, ut viverra velit mi at tortor. Aliquam lacinia condimentum felis, eu elementum ligula laoreet vitae. Sed placerat tempus turpis a fringilla. Etiam porta accumsan feugiat. Phasellus et cursus magna. Suspendisse vitae odio sit amet urna vulputate consectetur. Vestibulum massa magna, sagittis at dictum vitae, sagittis scelerisque erat. Donec viverra tincidunt lacus. Maecenas fermentum erat et mauris tincidunt sed eleifend quam tempus. In at augue mi, in tincidunt arcu. Duis dapibus aliquet mi, ac ullamcorper est semper quis. Sed nec nulla nec odio malesuada viverra id sed nulla. Donec lobortis euismod aliquam. Praesent sit amet dolor quis lacus auctor lobortis. In hac habitasse platea dictumst. Sed at nisi sed nisi ullamcorper pellentesque. Vivamus eget enim sem, non laoreet leo. Sed vel odio lacus.</p>\n"
-    . $bookEnd . "<!-- asdfasasdasfsf -- >";
-$book->addChapter("Chapter 1: Lorem ipsum", "Chapter001.html", $chapter1, true, EPub::EXTERNAL_REF_ADD);
-
-$chapter2 = $content_start . "<h1>Chapter 2</h1>\n"
-    . "<h2>Vivamus bibendum massa</h2>\n"
-    . "<p>Vivamus bibendum massa<!-- test comment <!-- nested comments are not allowed. --> --> ac magna congue gravida. Curabitur nulla ante, accumsan sit amet luctus a, fermentum ut diam. Maecenas porttitor faucibus mattis. Ut auctor aliquet ligula nec posuere. Nullam arcu turpis, dapibus sit amet tempor nec, cursus at augue. Aliquam sed sem velit, id sagittis mauris. Donec sed ipsum nisi, id scelerisque felis. Cras lacus est, fermentum in ultricies eu, congue in elit. Nulla tincidunt posuere eros, eget suscipit tellus porta vel. Aliquam ut sollicitudin libero. Suspendisse potenti. Sed cursus dignissim nulla in elementum. Aliquam id quam justo, sit amet laoreet ligula. Etiam pellentesque tellus a nisi commodo eu sodales ante commodo. Vestibulum ultricies sapien arcu. Proin nunc mauris, ultrices id imperdiet ac, malesuada ac nunc. Nunc a mi quis nunc ultricies rhoncus. Mauris pellentesque eros eu augue congue ac tincidunt est gravida.</p>\n"
-    . "<p>Integer lobortis <!--\n  Multi line\n test comment\n-->facilisis magna, non tristique sem facilisis ut. Sed id nisi diam. Nulla viverra lectus ut purus tempus sagittis. Quisque dictum enim tempus ipsum mollis blandit. Cras in mi non nulla imperdiet fringilla at blandit urna. Donec vel dui quis sem congue ullamcorper nec a massa. Vivamus in dui nunc. Donec sit amet augue odio, at imperdiet lacus. Mauris sit amet magna justo. Maecenas ultrices orci ultrices sapien ornare eget consequat nisl tristique. Integer non mi ac eros vehicula pharetra. Curabitur risus augue, sollicitudin vitae pharetra interdum, sollicitudin sit amet magna. Nunc sit amet est lacus, vel sodales elit. Duis dolor lorem, convallis eu dignissim quis, vulputate at nibh.</p>\n"
-    . "<p>Praesent gravida, sapien aliquet interdum elementum, magna mauris hendrerit eros, blandit posuere lectus neque sed massa. Cras ultricies rhoncus mi, vitae posuere ligula scelerisque sit amet. Cras porttitor congue odio, sit amet tristique magna euismod id. Cras enim dolor, scelerisque eget egestas vel, consectetur vel purus. Aenean et convallis felis. Mauris in arcu sollicitudin ipsum lobortis fringilla. Suspendisse felis mauris, convallis ac blandit interdum, imperdiet eget massa. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris scelerisque velit quis augue commodo tristique. Maecenas dictum dui congue enim tristique vel mattis neque luctus. Fusce neque dui, laoreet suscipit varius sed, mattis sit amet diam. Nullam elementum, ante non cursus imperdiet, eros dui placerat elit, sit amet elementum erat risus eget nunc.</p>\n"
-    . "<p id=\"internalLink\">Nam tellus nibh, vehicula a laoreet non, fermentum vel leo. Proin id augue tellus. Donec placerat pharetra interdum. Aliquam vestibulum viverra bibendum. Nullam auctor congue tortor. Sed sagittis, massa ac cursus malesuada, ipsum velit aliquam lectus, quis tincidunt tellus risus id justo. Suspendisse sodales adipiscing eros, ut pulvinar eros suscipit in. Fusce vel libero id urna blandit pharetra. Cras aliquam suscipit ultrices. Vivamus luctus tristique vestibulum. Nam placerat dolor ipsum. Nulla vitae tristique sapien. Nulla laoreet ante ut elit dictum ultricies. Fusce mi tortor, commodo sit amet tincidunt semper, pellentesque nec ante. Vestibulum nec dui at massa adipiscing pulvinar. Integer ultrices tristique odio, iaculis bibendum metus fringilla id. Ut ac elit ac enim convallis dignissim pharetra id purus. Nunc pulvinar blandit nulla, in ornare erat condimentum id. Sed sit amet placerat est. Curabitur pretium tellus in velit aliquet eu dictum arcu consectetur.</p>\n"
-    . "<p>In hac habitasse platea dictumst. Integer lectus augue, varius nec rutrum non, fringilla eu neque. Curabitur a gravida velit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque vestibulum orci ac ligula interdum dapibus. Maecenas sollicitudin aliquet libero in sodales. In tempor orci vitae nisi imperdiet at varius sem dignissim. Aenean tortor libero, pellentesque eget hendrerit id, ullamcorper in justo. Sed euismod egestas est vitae convallis. Nunc tempus lacinia purus condimentum mattis. Sed id elementum est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In nec tempus eros. </p>\n"
-    . $bookEnd;
-$book->addChapter("Chapter 2: Vivamus bibendum massa", "Chapter002.html", $chapter2, true, EPub::EXTERNAL_REF_ADD);
-*/
-$book->addChapter("Log", "Log.xhtml", $content_start . $log->getLog() . "\n</pre>" . $bookEnd);
-
-if ($book->isLogging) { // Only used in case we need to debug EPub.php.
-    $epuplog = $book->getLog();
-    $book->addChapter("ePubLog", "ePubLog.xhtml", $content_start . $epuplog . "\n</pre>" . $bookEnd);
+if ($ePubBook->isLogging) { // Only used in case we need to debug EPub.php.
+    $epuplog = $ePubBook->getLog();
+    $ePubBook->addChapter("ePubLog", "ePubLog.xhtml", $content_start . $epuplog . "\n</pre>" . $bookEnd);
 }
 
-$book->finalize(); // Finalize the book, and build the archive.
+$ePubBook->finalize(); // Finalize the book, and build the archive.
 
 // Send the book to the client. ".epub" will be appended if missing.
-//$zipData = $book->sendBook("ExampleBookSimple");
 $cleanbookTitle = str_replace(' ', '', $bookTitle);
-$zipData = $book->sendBook($cleanbookTitle);
+$zipData = $ePubBook->sendBook($cleanbookTitle);
 
 // After this point your script should call exit. If anything is written to the output,
 // it'll be appended to the end of the book, causing the epub file to become corrupt.

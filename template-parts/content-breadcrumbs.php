@@ -9,7 +9,8 @@
  */
 //include(dirname(__FILE__)."/../epubgenerator.php");
 ?>
-  <?php get_template_part( 'template-parts/content-feedbackform', 'none' ); ?>
+<?php get_template_part( 'template-parts/content-downloadbook', 'none' ); ?>
+<?php get_template_part( 'template-parts/content-feedbackform', 'none' ); ?>
 <div class="header-bar">
     <div class="article-header">
         <div id="header-left">
@@ -38,18 +39,20 @@
         </div>
         <div id="header-right">
             <div id="header-options">
-                <?php $URL = get_template_directory_uri().'/template-parts/content-epubgenerator.php'; ?>
-                <a href="<?php echo $URL.'?pageid='.$post->ID?>"><i class="epubdownload far fa-download"></i></a>
+
+            <!-- Download Options -->
+            <a style="cursor:pointer;" onclick="toggleHidden(this);"><i class="far fa-download"></i></a>
+
+            <!-- Comments -->
             <?php if ((comments_open() == true) && ($post != $root)){
                 $feedbackOn = get_post_meta( $root->ID, 'acceptFeedback', true );
                 if($feedbackOn == true)
                 {
-                  echo ' <a href="#" onclick="toggleHidden(this);"><i class="far fa-comment-alt"></i></a>';
+                  echo ' <a style="cursor:pointer;" onclick="toggleHidden(this);"><i class="far fa-comment-alt"></i></a>';
                 }
                ?>
 
           <?php  }?>
-            <!--<i class="far fa-download"></i>-->
             <a class="hidden" href="#" onclick="window.toggleFullscreen(this);"><i class="fas fa-compress"></i></a>
             <a class ="" href="#" onclick="window.toggleFullscreen(this);"><i class="fas fa-expand"></i></a>
             <a id="print" href="#" onclick="window.print();"><i class="fas fa-print"></i></a>

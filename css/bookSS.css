@@ -13,7 +13,8 @@
   }
 
   .next-prev{
-    width:2em !important;
+    /*width:2em !important;*/
+    display:none !important;
   }
   .left-toc {
     transition: margin 0.5s;
@@ -57,6 +58,10 @@
     margin-right:10%;
   }
   .custom-feedbackform{
+    width: 100%;
+    top:50px;
+  }
+  .custom-downloadbook{
     width: 100%;
     top:50px;
   }
@@ -119,7 +124,10 @@
     right:10%;
   }
 
-
+  .custom-downloadbook{
+    width: 20%;
+    right:12em;
+  }
 }
 
 @media only screen and (min-width: 769px){
@@ -170,6 +178,11 @@
     left:25%;
     right:25%;
   }
+  .custom-downloadbook{
+    width: 20%;
+    right:12em;
+  }
+
   .post-votes {
     width: 50%;
     margin-left: auto;
@@ -697,12 +710,12 @@ background-color: rgb(39, 39, 39);
 }
 
 /* Sidebar Header Nav */
-.entry-content h2{
-  /* padding-top: 2.5em;
+/* .entry-content h2{
+  padding-top: 2.5em;
     margin-top: -1.5em;
-    line-height: 1.2em*/
+    line-height: 1.2em
 }
-
+*/
 
 ul.page-sidebar-list {
   list-style-type: none;
@@ -900,15 +913,13 @@ margin-left:16em;
 
  .custom-feedbackform{
   z-index: 1;
-
-position:fixed;
-border: 1px solid #eee;
-
-background-color: white;
-padding:1em;
--webkit-box-shadow: 5px 5px 10px 0px rgb(189 189 189 / 75%);
-    -moz-box-shadow: 5px 5px 10px 0px rgba(189,189,189,75%);
-    box-shadow: 5px 5px 10px 0px rgb(189 189 189 / 75%);
+  position:fixed;
+  border: 1px solid #eee;
+  background-color: white;
+  padding:1em;
+  -webkit-box-shadow: 5px 5px 10px 0px rgb(189 189 189 / 75%);
+      -moz-box-shadow: 5px 5px 10px 0px rgba(189,189,189,75%);
+      box-shadow: 5px 5px 10px 0px rgb(189 189 189 / 75%);
  }
 
  .custom-feedbackform i{
@@ -918,6 +929,39 @@ padding:1em;
    right:0.5em;
    color:gray;
  }
+
+ .custom-downloadbook{
+  z-index: 1;
+  position:fixed;
+  border: 1px solid #eee;
+  background-color: white;
+  padding:10px;
+  -webkit-box-shadow: 5px 5px 10px 0px rgb(189 189 189 / 75%);
+      -moz-box-shadow: 5px 5px 10px 0px rgba(189,189,189,75%);
+      box-shadow: 5px 5px 10px 0px rgb(189 189 189 / 75%);
+ }
+ .custom-downloadbook i{
+   margin-right:10px;
+ }
+ .custom-downloadbook a{
+    text-decoration: none;
+    padding:5px;
+    margin-bottom:5px;
+
+    background-color:#eee ;
+    color:rgb(77,77,77);
+    position:relative;
+    text-align:center;
+    border-radius: 5px;
+    float: left;
+    width: 100%;
+ }
+
+ .custom-downloadbook a:hover{
+  background-color:#0071bc ;
+  color:white;
+ }
+
 
 .post-votes {
   text-align:center;
@@ -949,10 +993,6 @@ padding:1em;
   letter-spacing:0.5em;
   font-family: Metropolis, helvetica neue, sans-serif;
   color:#bbbbbb;
-}
-
-#search-results > div > div > div > h2{
-
 }
 
 #search-results > div > div.article-body > h2{
