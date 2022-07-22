@@ -19,18 +19,14 @@ get_header();?>
 			the_custom_logo();
 			if ( is_front_page() && is_home() ) :
 				?>
-				<h1 class="site-title"><!--<a href="<?php /*echo esc_url( home_url( '/' ) );*/ ?>" rel="home">--><?php bloginfo( 'name' ); ?></a></title>
+				<h1 class="site-title"><?php bloginfo( 'name' ); ?></a></title>
 				<?php
 			else :
 				?>
-				<p class="site-title"><!--<a href="<?php /*echo esc_url( home_url( '/' ) );*/ ?>" rel="home">--><?php bloginfo( 'name' ); ?></a></p>
+				<p class="site-title"><?php bloginfo( 'name' ); ?></a></p>
 				<?php
 			endif;
-			/*$_s_description = get_bloginfo( 'description', 'display' );
-			if ( $_s_description || is_customize_preview() ) :
-				?>
-				<p class="site-description"><?php echo $_s_description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
-			<?php endif*/; ?>
+			?>
 		</div><!-- .site-branding -->
 	</div><!-- #masthead -->
 	<?php
@@ -80,7 +76,7 @@ if ($topLevelPages){?>
 		}
 		else{
 				$hueRotate = $key/count($topLevelPages);
-				echo '<img id="cover-image" style="filter:hue-rotate('.$hueRotate.'turn);" src="'.get_template_directory_uri().'/images/book-cover.jpg" rel="lightbox">';
+				echo '<img id="cover-image" style="filter:hue-rotate('.$hueRotate.'turn);" src="'.esc_url(get_template_directory_uri()).'/images/book-cover.jpg" rel="lightbox">';
 		}
 		echo '</div></li>';
 		echo '</a>';

@@ -21,14 +21,13 @@
 		echo '<div id="toc-list">';
 		echo '<a id="home-icon" href="'.get_home_url().'"><i class="fas fa-home"></i></a>';
 		echo '<div class="book-image">';
-		echo '<img src="'.get_template_directory_uri().'/images/paper.jpg" rel="lightbox">';
+		echo '<img src="'.esc_url(get_template_directory_uri()).'/images/paper.jpg" rel="lightbox">';
 		echo '</div>';
 		//CATEGORY TITLE
 		$category = get_the_category()[0];
 		echo '<h1>'.$category->name.'</h1>';
 		?>
 		<form class="search-form" action="/" method="get">
-		<!-- <label for="search">Search in <?php echo home_url( '/' ); ?></label> -->
 		<i class="far fa-search"></i>
 		<input type="text" name="s" id="search" placeholder="Search" value="<?php ?>" />
 		</form><?php

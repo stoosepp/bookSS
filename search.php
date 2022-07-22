@@ -1,11 +1,7 @@
 <?php
-/**
+/*
  * The template for displaying search results pages
- *
- * @link https://developer.wordpress.org/themes/basics/template-hierarchy/#search-result
- *
- * @package _s
- */
+*/
 
 get_header();
 ?>
@@ -21,13 +17,12 @@ get_header();
 			// //PUT PHOTO HERE
 			echo '<div class="book-image">';
 
-			echo '<img src="'.get_template_directory_uri().'/images/magnify.jpg" rel="lightbox">';
+			echo '<img src="'.esc_url(get_template_directory_uri()).'/images/magnify.jpg" rel="lightbox">';
 
 			echo '</div>';
 			?> <p style="color:darkgray; line-height: 1.4em; text-align:center; margin-bottom:10px;">Search Results for:</p>
 			<h2 id="search-title"><?php echo get_search_query(); ?></h2>
 			<form class="search-form" action="<?php bloginfo( 'url' ); ?>/" method="get">
-			<!-- <label for="search">Search in <?php echo home_url( '/' ); ?></label> -->
 			<i class="far fa-search"></i>
 			<input type="text" name="s" id="search" placeholder="Search" value="<?php the_search_query(); ?>" />
 			</form><?php
@@ -99,7 +94,7 @@ get_header();
 		else :
 			//get_template_part( 'template-parts/content', 'none' );
 				echo '<h2 style="text-align:center;">Sorry, nothing was found <span>&#129402</span></h2>';
-				echo '<img src="'.get_template_directory_uri().'/images/pug.jpg" style="width:100%; height:auto;">';
+				echo '<img src="'.esc_url(get_template_directory_uri()).'/images/pug.jpg" style="width:100%; height:auto;">';
 				echo '<p style="text-align:center;">Try searching again or exploring the content on this site by <a href="'.get_home_url().'">visiting the  home page</p>';
 
 		endif;
