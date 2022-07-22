@@ -77,7 +77,7 @@ function licenseSelectMetaBoxCreator($post){
                 //echo '<input type="radio" name="licenseSelector" value="'.$CCLicense.'" '.$isChecked.'>All Rights Reserved</input>';
             }
             else{
-                $CCimage = get_template_directory_uri().'/inc/images/'.$CCLicense.'.png';
+                $CCimage = esc_url(get_template_directory_uri()).'/inc/images/'.$CCLicense.'.png';
                 $CCDescription = '<a target="_blank" href="https://creativecommons.org/licenses/'.$CCLicense.'/4.0/">CC '.strtoupper ($CCLicense).'</a>';
                 $CCImageTag = '<img style="width:30%; height:auto;" src="'.$CCimage.'" />';
                 //echo '<input style="position: relative; bottom: 0.5em;" type="radio" name="licenseSelector" value="'.$CCLicense.'" '.$isChecked.'>'.$CCImageTag.' '.$CCDescription;
@@ -205,7 +205,7 @@ function addColumnsToParts($columns) {
                 if($feedbackOn == true){
                   $voteData = getVoteData($post_id);
                   if ($voteData){
-                    $fontAwesome = get_template_directory_uri().'/css/all.css';
+                    $fontAwesome = esc_url(get_template_directory_uri()).'/css/all.css';
 
       ?>
                   <link rel="stylesheet" href="<?php echo $fontAwesome; ?>">
@@ -244,7 +244,7 @@ function addColumnsToParts($columns) {
                       else{
                           $CCLink = 'https://creativecommons.org/licenses/'.$CCLicense.'/4.0/';
                           $CCimage = '/inc/images/'.$CCLicense.'.png';
-                          echo '<a target="_blank" href="'.$CCLink.'"><img style="height:30px; width:auto; padding-top:5px;" src="'.get_template_directory_uri().$CCimage.'"/></a>';
+                          echo '<a target="_blank" href="'.$CCLink.'"><img style="height:30px; width:auto; padding-top:5px;" src="'.esc_url(get_template_directory_uri()).$CCimage.'"/></a>';
                       }
 
                   }
@@ -277,7 +277,7 @@ function filterPageList($post_type){
         $allBooks = getTopLevelPages()
         ?>
         <select name="bookSelector">
-        <option value=""><?php _e('All Books', 'wose45436'); ?></option>
+        <option value=""><?php _e('All Books', 'theopenbook'); ?></option>
         <?php
             $currentBook = isset($_GET['bookSelector'])? $_GET['bookSelector']:'';
             foreach ($allBooks as $thisBook) {

@@ -1,18 +1,12 @@
 <?php
-/**
- * _s functions and definitions
- *
- * @link https://developer.wordpress.org/themes/basics/theme-functions/
- *
- * @package _s
- */
 
-if ( ! defined( '_S_VERSION' ) ) {
+
+if ( ! defined( 'B_VERSION' ) ) {
 	// Replace the version number of the theme on each release.
-	define( '_S_VERSION', '1.0.0' );
+	define( 'B_VERSION', '1.0.0' );
 }
 
-if ( ! function_exists( '_s_setup' ) ) :
+if ( ! function_exists( 'b_setup' ) ) :
 	/**
 	 * Sets up theme defaults and registers support for various WordPress features.
 	 *
@@ -20,14 +14,14 @@ if ( ! function_exists( '_s_setup' ) ) :
 	 * runs before the init hook. The init hook is too late for some features, such
 	 * as indicating support for post thumbnails.
 	 */
-	function _s_setup() {
+	function b_setup() {
 		/*
 		 * Make theme available for translation.
 		 * Translations can be filed in the /languages/ directory.
 		 * If you're building a theme based on _s, use a find and replace
-		 * to change '_s' to the name of your theme in all the template files.
+		 * to change 'theopenbook' to the name of your theme in all the template files.
 		 */
-		load_theme_textdomain( '_s', get_template_directory() . '/languages' );
+		load_theme_textdomain( 'theopenbook', get_template_directory() . '/languages' );
 
 		// Add default posts and comments RSS feed links to head.
 		add_theme_support( 'automatic-feed-links' );
@@ -50,7 +44,7 @@ if ( ! function_exists( '_s_setup' ) ) :
 		// This theme uses wp_nav_menu() in one location.
 		register_nav_menus(
 			array(
-				'menu-1' => esc_html__( 'Primary', '_s' ),
+				'menu-1' => esc_html__( 'Primary', 'theopenbook' ),
 			)
 		);
 
@@ -75,7 +69,7 @@ if ( ! function_exists( '_s_setup' ) ) :
 		add_theme_support(
 			'custom-background',
 			apply_filters(
-				'_s_custom_background_args',
+				'theopenbook_custom_background_args',
 				array(
 					'default-color' => 'ffffff',
 					'default-image' => '',
@@ -102,7 +96,7 @@ if ( ! function_exists( '_s_setup' ) ) :
 		);
 	}
 endif;
-add_action( 'after_setup_theme', '_s_setup' );
+add_action( 'after_setup_theme', 'b_setup' );
 
 /**
  * Set the content width in pixels, based on the theme's design and stylesheet.
@@ -124,9 +118,9 @@ add_action( 'after_setup_theme', '_s_content_width', 0 );
 function _s_widgets_init() {
 	register_sidebar(
 		array(
-			'name'          => esc_html__( 'Sidebar', '_s' ),
+			'name'          => esc_html__( 'Sidebar', 'theopenbook' ),
 			'id'            => 'sidebar-1',
-			'description'   => esc_html__( 'Add widgets here.', '_s' ),
+			'description'   => esc_html__( 'Add widgets here.', 'theopenbook' ),
 			'before_widget' => '<section id="%1$s" class="widget %2$s">',
 			'after_widget'  => '</section>',
 			'before_title'  => '<h2 class="widget-title">',
@@ -140,10 +134,10 @@ add_action( 'widgets_init', '_s_widgets_init' );
  * Enqueue scripts and styles.
  */
 function _s_scripts() {
-	wp_enqueue_style( '_s-style', get_stylesheet_uri(), array(), _S_VERSION );
+	wp_enqueue_style( '_s-style', get_stylesheet_uri(), array(), B_VERSION );
 	wp_style_add_data( '_s-style', 'rtl', 'replace' );
 
-	wp_enqueue_script( '_s-navigation', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true );
+	wp_enqueue_script( '_s-navigation', esc_url(get_template_directory_uri()) . '/js/navigation.js', array(), B_VERSION, true );
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
@@ -199,7 +193,7 @@ add_post_type_support( 'page', 'excerpt' );
 
 
 function getCustomStylesheet($stylename){
-	$themedirectory = get_template_directory_uri();
+	$themedirectory = esc_url(get_template_directory_uri());
 	return $themedirectory.'/css/'.$stylename.'.css';
 }
 
@@ -379,7 +373,7 @@ if(!function_exists('load_my_script')){
         $deps = array('jquery');
         $version= '1.0';
         $in_footer = true;
-       	wp_enqueue_script('my-script', get_stylesheet_directory_uri() . '/js/bookSS.js', $deps, $version, $in_footer);
+       	wp_enqueue_script('my-script', get_stylesheet_directory_uri() . '/js/theopenbook.js', $deps, $version, $in_footer);
         wp_localize_script('my-script', 'my_script_vars', array(
                 'postID' => $post->ID
             )
@@ -387,5 +381,11 @@ if(!function_exists('load_my_script')){
     }
 }
 add_action('wp_enqueue_scripts', 'load_my_script');
+
+
+
+/* ADD SETTINGS PANE */
+Function test_custom_settings () {
+	add_theme_page("Theme Customization", "Theme Customization", "manage_options", "theme-options", "theme_option_page", null, 99);
 
 ?>

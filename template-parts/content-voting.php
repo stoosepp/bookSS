@@ -23,8 +23,8 @@
 							direction = 'down';
 						}
 				});
-				var ajaxscript = { ajax_url : '<?= get_bloginfo("wpurl"); ?>' + "/wp-admin/admin-ajax.php" }
-				var templateUrl = '<?= get_bloginfo("wpurl"); ?>' + "/wp-admin/admin-ajax.php";
+				var ajaxscript = { ajax_url : '<?= site_url(); ?>' + "/wp-admin/admin-ajax.php" }
+				var templateUrl = '<?= site_url(); ?>' + "/wp-admin/admin-ajax.php";
 
 				$.ajax({
 				type: "POST",

@@ -17,7 +17,7 @@
 				$order = $post->menu_order;
 				consolePrint('This book is at index '.$order);
 				$hueRotate = $order/count($topLevelPages);
-				echo '<img  style="filter:hue-rotate('.$hueRotate.'turn);" src="'.get_template_directory_uri().'/images/book-cover.jpg" rel="lightbox">';
+				echo '<img  style="filter:hue-rotate('.$hueRotate.'turn);" src="'.esc_url(get_template_directory_uri()).'/images/book-cover.jpg" rel="lightbox">';
 			}
 			echo '</div>';
 			//BOOK TITLE

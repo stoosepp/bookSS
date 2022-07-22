@@ -41,20 +41,20 @@
 	else :
 
 	endif;?>
-	<?php wp_register_script( 'bookSS', get_template_directory_uri() . '/js/bookSS.js' );
-	wp_enqueue_script( 'bookSS' );
+	<?php wp_register_script( 'theopenbook', esc_url(get_template_directory_uri()) . '/js/theopenbook.js' );
+	wp_enqueue_script( 'theopenbook' );
 
 	//Pass template URL over to the JS file
 	$translation_array = array( 'templateUrl' => get_stylesheet_directory_uri() );
 	wp_enqueue_style( 'style-switch', getcustomStylesheet('toggleswitch') );
-	wp_localize_script( 'bookSS', 'bookSSURL', $translation_array );
+	wp_localize_script( 'theopenbook', 'theopenbookURL', $translation_array );
 	wp_enqueue_script("jquery");
 	?>
 
-	<link rel="stylesheet" id="print-css" href="<?php echo get_template_directory_uri();?>/css/print.css"  media="print"/>
-	<link rel="stylesheet" id="bookSS-css" href="<?php echo get_template_directory_uri();?>/css/bookSS.css" media="all">
-	<link rel="stylesheet" id="default-css" href="<?php echo get_template_directory_uri();?>/css/default.css" media="all">
-	<link rel="stylesheet" id="fontawesome-css" href="<?php echo get_template_directory_uri();?>/css/all.css" media="all">
+	<link rel="stylesheet" id="print-css" href="<?php echo esc_url(get_template_directory_uri());?>/css/print.css"  media="print"/>
+	<link rel="stylesheet" id="theopenbook-css" href="<?php echo esc_url(get_template_directory_uri());?>/css/theopenbook.css" media="all">
+	<link rel="stylesheet" id="default-css" href="<?php echo esc_url(get_template_directory_uri());?>/css/default.css" media="all">
+	<link rel="stylesheet" id="fontawesome-css" href="<?php echo esc_url(get_template_directory_uri());?>/css/all.css" media="all">
 
 
 	<?php
@@ -110,4 +110,4 @@
 <?php wp_body_open(); ?>
 
 <div id="page" class="site">
-	<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', '_s' ); ?></a>
+	<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'theopenbook' ); ?></a>

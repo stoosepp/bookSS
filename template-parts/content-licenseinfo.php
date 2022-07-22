@@ -9,10 +9,10 @@
 //LOAD THIS FROM BOOK META
 
 
-$bookSSTheme = wp_get_theme();
-$themeName = esc_html( $bookSSTheme->get( 'Name' ));
-$themeURI = esc_html( $bookSSTheme->get( 'ThemeURI' ));
-$authorURI =  esc_html( $bookSSTheme->get( 'AuthorURI' ));
+$theopenbookTheme = wp_get_theme();
+$themeName = esc_html( $theopenbookTheme->get( 'Name' ));
+$themeURI = esc_html( $theopenbookTheme->get( 'ThemeURI' ));
+$authorURI =  esc_html( $theopenbookTheme->get( 'AuthorURI' ));
 
 echo '  |  <a href="'.$themeURI.'" target="_blank">'.$themeName.' Theme</a>, 2021. </p>';
 if (is_page()){
@@ -30,7 +30,7 @@ if (is_page()){
         $CCimage = '/inc/images/'.$CCLicense.'.png';
         $CCDescription = '<a href="https://creativecommons.org/licenses/'.$CCLicense.'/4.0/">CC '.strtoupper ($CCLicense).' 4.0 License</a>';
         ?>
-        <p><img src="<?php echo get_template_directory_uri().$CCimage;?>"></p><p>All original content in this book is licenced under the <?php echo $CCDescription ?> unless otherwise noted. </p></div>
+        <p><img src="<?php echoesc_url( get_template_directory_uri()).$CCimage;?>"></p><p>All original content in this book is licenced under the <?php echo $CCDescription ?> unless otherwise noted. </p></div>
         <?php
     }
    $footerText = get_post_meta( $root->ID, 'footerText', true );

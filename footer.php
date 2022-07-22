@@ -1,13 +1,5 @@
 <?php
-/**
- * The template for displaying the footer
- *
- * Contains the closing of the #content div and all content after.
- *
- * @link https://developer.wordpress.org/themes/basics/template-files/#template-partials
- *
- * @package _s
- */
+
 
 ?>
 
@@ -27,10 +19,10 @@
 			$author_id = get_the_author_meta( 'ID' );
 			echo get_the_author_meta('display_name', $author_id);
 			}
-			$bookSSTheme = wp_get_theme();
-			$themeName = esc_html( $bookSSTheme->get( 'Name' ));
-			$themeURI = esc_html( $bookSSTheme->get( 'ThemeURI' ));
-			$authorURI =  esc_html( $bookSSTheme->get( 'AuthorURI' ));
+			$theopenbookTheme = wp_get_theme();
+			$themeName = esc_html( $theopenbookTheme->get( 'Name' ));
+			$themeURI = esc_html( $theopenbookTheme->get( 'ThemeURI' ));
+			$authorURI =  esc_html( $theopenbookTheme->get( 'AuthorURI' ));
 
 			if (is_front_page() || is_search()){
 				//Don't show license stuff on home page

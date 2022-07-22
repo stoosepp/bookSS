@@ -1,6 +1,6 @@
-# bookSS
+# theopenbook
 An Open Textbook theme for Wordpress
-![Screenshot of BookSS Theme](https://github.com/stoosepp/bookSS/blob/4822746d9f7ab4fb73c942699ff07a548a547500/screenshot.png)
+![Screenshot of theopenbook Theme](https://github.com/stoosepp/theopenbook/blob/4822746d9f7ab4fb73c942699ff07a548a547500/screenshot.png)
 
 ## But Why?
 For teachers who want to write their own learning materials / books, there's not many options out there, but this is a growing space.
@@ -8,7 +8,7 @@ For teachers who want to write their own learning materials / books, there's not
 * There's [Jupyter Notebooks](https://jupyter.org/) that have an awesome layout and ability to embed interactive elements. Unfortunately, most of these elements are written in either Python or Markdown, so they may not be accessible to those without a programming background
 * [Docsify.js](https://docsify.js.org/) is another option written in Markdown, but again MD may not be the easiest or most accessible way to write learnign materials for teachers.
 
-Enter bookSS (just pronounced "books" - don't overcomplicate it), a theme for Wordpress which packs in many of the same design language and features that these other platforms do, well *except for ePub and PDF export, but I'm working on that.*
+Enter theopenbook (just pronounced "books" - don't overcomplicate it), a theme for Wordpress which packs in many of the same design language and features that these other platforms do, well *except for ePub and PDF export, but I'm working on that.*
 
 ## Features
 * Simple, page-based book author
@@ -26,7 +26,7 @@ Recommended Plugins to make life easier: [Simple Page Ordering](https://wordpres
 
 
 *IN PROGRESS:*
-* ePub & PDF Download options (probably ready in early 2022)
+* ePub & PDF Download options (probably ready in early 2023)
 
 ## In Practice
 **Wanna see what it looks like for real?**
@@ -59,6 +59,14 @@ Thank you to [@hibbittsdesign](https://twitter.com/hibbittsdesign), [@FirasM](ht
 This Theme incorporates the following work:
 [Tufte CSS](https://github.com/edwardtufte/tufte-css) led by Dave Liepmann
 License: MIT License
+
+## Licence
+Contributors: the WordPress team
+Requires at least: WordPress 4.4
+Tested up to: WordPress 6.0
+Version: 1.3
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 ## Contribute and Support
 

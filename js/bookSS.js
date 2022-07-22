@@ -278,7 +278,7 @@ function saveCheckbox(thisCheckbox){
 
 async function updateCSS(forID, isChecked)
 {
-    var bookURL = bookSSURL.templateUrl;
+    var bookURL = theopenbookURL.templateUrl;
     var body = document.body
     if  (isChecked == true)
     {
