@@ -171,7 +171,7 @@ require get_template_directory() . '/inc/customizer.php';
 if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
-
+require_once 'wp-includes/formatting.php';
 /**
  * Load WooCommerce compatibility file.
  */
@@ -385,7 +385,7 @@ add_action('wp_enqueue_scripts', 'load_my_script');
 
 
 /* ADD SETTINGS PANE */
-Function test_custom_settings () {
-	add_theme_page("Theme Customization", "Theme Customization", "manage_options", "theme-options", "theme_option_page", null, 99);
-
+// function test_custom_settings () {
+// 	add_theme_page("Theme Customization", "Theme Customization", "manage_options", "theme-options", "theme_option_page", null, 99);
+// }
 ?>

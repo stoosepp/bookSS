@@ -30,7 +30,7 @@ if (is_page()){
         $CCimage = '/inc/images/'.$CCLicense.'.png';
         $CCDescription = '<a href="https://creativecommons.org/licenses/'.$CCLicense.'/4.0/">CC '.strtoupper ($CCLicense).' 4.0 License</a>';
         ?>
-        <p><img src="<?php echoesc_url( get_template_directory_uri()).$CCimage;?>"></p><p>All original content in this book is licenced under the <?php echo $CCDescription ?> unless otherwise noted. </p></div>
+        <p><img src="<?php echo esc_url(get_template_directory_uri()).$CCimage;?>"></p><p>All original content in this book is licenced under the <?php echo $CCDescription ?> unless otherwise noted. </p></div>
         <?php
     }
    $footerText = get_post_meta( $root->ID, 'footerText', true );
